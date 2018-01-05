@@ -1,7 +1,49 @@
 set nocompatible
 set number
 set encoding=utf-8
-filetype plugin indent on
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'tpope/vim-abolish'
+Plugin 'ervandew/supertab'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'tommcdo/vim-exchange'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
+Plugin 'tpope/vim-repeat'
+Plugin 'powerline/powerline'
+Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'tpope/vim-vinegar'
+Plugin 'bronson/vim-visual-star-search'
+Plugin 'vimwiki/vimwiki'
+Plugin 'Raimondi/delimitMate'
+Plugin 'ldong/vim_loremipsum'
+"html edit
+Plugin 'mattn/emmet-vim'
+Plugin 'scrooloose/nerdtree'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 syntax on
 "size of a hard tabstop
 set tabstop=8
@@ -9,12 +51,12 @@ set tabstop=8
 vnoremap // y/<C-R>"<CR>
 let mapleader = "\<Space>"
 " copy & paste to system clipboard
-vmap <Leader>y "*y
-vmap <Leader>d "*d
-nmap <Leader>p "*p
-nmap <Leader>P "*P
-vmap <Leader>p "*p
-vmap <Leader>P "*P
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
 
 " size of an "indent"
 set shiftwidth=4
@@ -89,3 +131,8 @@ inoremap CC <Esc>C
 " inoremap SS <Esc>S
 inoremap DD <Esc>dd
 inoremap UU <Esc>u
+
+colorscheme zmrok
+" colorscheme ChocolateLiquor
+:nnoremap <leader>t :NERDTreeToggle<CR>
+let g:session_autoload = 'no'
