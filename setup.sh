@@ -23,3 +23,12 @@
 
   sudo apt-get install tmux
   ln -s  profile/vim-vundle/.vimrc .vimrc
+
+
+  starting yocto
+
+  du L4.1.15_2.0.0-ga_mfg-tools.tar.gz  -sh
+  tar -xvzf L4.1.15_2.0.0-ga_mfg-tools.tar.gz 
+  git clone git://git.freescale.com/imx/uboot-imx.git -b imx_v2016.03_4.1.15_2.0.0_ga
+  git clone git://git.freescale.com/imx/uboot-imx.git -b imx_v2016.03_4.1.15_2.0.0_ga --depth=1
+  bitbake -h
