@@ -1,0 +1,11 @@
+Steps to setup a ubuntu box for Yocto i.MX image building
+
+- bash_it
+- Vim
+- Vifm
+- tmux
+- yocto
+- repo
+- bitbake
+- git
+- uboot
