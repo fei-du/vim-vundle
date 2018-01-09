@@ -28,6 +28,18 @@
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
 
+    #bash-it
+    bashit enable plugin dirs
+    bashit enable plugin fzf
+    bashit enable plugin git
+    bashit enable plugin history
+    bashit enable plugin tmux
+    bashit enable plugin extract
+    bashit enable plugin projects
+    bashit enable alias tmux
+    bashit enable alias git
+    bashit enable alias general
+    bashit enable alias clipboard
 
 # Starting yocto
     mkdir ~/bin

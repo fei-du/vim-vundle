@@ -1,5 +1,6 @@
 alias v='vim'
 PATH=$PATH:~/bin
+export PROJECT_PATHS=~/imx/fsl_release-bsp:~/profile/vim-vundle
 
 # add bitbake to path
 # PATH=/home/dufei/imx/poky/poky/bitbake/bin:$PATH
