@@ -24,6 +24,9 @@
 
     sudo apt-get install tmux
     ln -s  profile/vim-vundle/.vimrc .vimrc
+    # install fzf finder
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
 
 
 # Starting yocto
