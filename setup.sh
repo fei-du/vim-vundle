@@ -27,6 +27,17 @@
 
 
 # Starting yocto
+    mkdir ~/bin
+    curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+    git clone git@github.com:fei-du/yocto-repo.git
+    chmod a+x ~/bin/repo
+    export PATH=~/bin:$PATH
+
+    mkdir fsl-release-bsp
+    cd fsl-release-bsp
+    repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1-krogoth
+    repo sync
+
     du L4.1.15_2.0.0-ga_mfg-tools.tar.gz  -sh
     tar -xvzf L4.1.15_2.0.0-ga_mfg-tools.tar.gz 
     git clone git://git.freescale.com/imx/uboot-imx.git -b imx_v2016.03_4.1.15_2.0.0_ga
