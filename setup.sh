@@ -72,3 +72,18 @@
     # writing u-boot image to sdcard
     sudo dd if=6ul-u-boot.imx of=/dev/mmcblk0 bs=512 seek=2
     sync
+
+# setup U-boot build
+    #install cross compiler
+    sudo apt-get install gcc-arm-linux-gnueabihf
+    #install dtc, not avaiable on ubuntu-14
+    sudo apt-get install device-tree-compiler
+
+    export ARCH=arm
+    export CROSS_COMPILE=arm-linux-gnueabihf-
+
+    make mx6ul_14x14_ddr3_arm2_defconfig
+    make
+
+    sudo dd if=u-boot.imx of=/dev/mmcblk0 bs=512 seek=2
+    sync
