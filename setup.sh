@@ -40,6 +40,7 @@
     bashit enable alias git
     bashit enable alias general
     bashit enable alias clipboard
+    bashit enable alias apt
 
 # Starting yocto
     mkdir ~/bin
