@@ -28,6 +28,18 @@
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
 
+    #install vifm
+    git clone --depth=1 git@github.com:vifm/vifm.git
+    cd vifm/
+    sudo apt-get install sshfs curlftpfs fuse fuse-zip fusefat fuseiso
+    ls scripts/
+    ./scripts/fix-timestamps
+    ./configure
+    make
+    sudo make install
+    # skip vifmrc, currently not working on ubuntu box
+    mv vifmrc vifmrc_backup
+
     #bash-it
     bashit enable plugin dirs
     bashit enable plugin fzf
