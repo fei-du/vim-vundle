@@ -54,6 +54,8 @@
     bashit enable alias clipboard
     bashit enable alias apt
 
+    apt-get install bashdb
+
 # Starting yocto
     mkdir ~/bin
     curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo

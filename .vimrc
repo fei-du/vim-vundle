@@ -39,6 +39,7 @@ Plugin 'ldong/vim_loremipsum'
 "html edit
 Plugin 'mattn/emmet-vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'WolfgangMehner/bash-support'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -136,3 +137,4 @@ colorscheme zmrok
 " colorscheme ChocolateLiquor
 :nnoremap <leader>t :NERDTreeToggle<CR>
 let g:session_autoload = 'no'
+set hidden
