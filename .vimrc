@@ -137,4 +137,5 @@ colorscheme zmrok
 " colorscheme ChocolateLiquor
 :nnoremap <leader>t :NERDTreeToggle<CR>
 let g:session_autoload = 'no'
+let g:session_autosave = 'no'
 set hidden
