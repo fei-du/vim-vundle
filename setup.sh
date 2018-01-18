@@ -41,6 +41,10 @@
     # skip vifmrc, currently not working on ubuntu box
     mv vifmrc vifmrc_backup
 
+    #install ncdu
+    # https://dev.yorhel.nl/ncdu/man
+    aptinst ncdu
+
     #bash-it
     bashit enable plugin dirs
     bashit enable plugin fzf
@@ -104,3 +108,6 @@
 
     sudo dd if=u-boot.imx of=/dev/mmcblk0 bs=512 seek=2
     sync
+
+# history
+    echo $PATH | tr ':' '\n'
