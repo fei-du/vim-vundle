@@ -13,3 +13,8 @@ export CROSS_COMPILE=arm-linux-gnueabihf-
 # bash-it enable plugin tmux
 # bash-it enable alias git
 # bash-it enable alias tmux
+
+# ctrl + x + e edit command line in editor
+export EDITOR=vim
+# edit previous command in editor, save and run
+# fc
