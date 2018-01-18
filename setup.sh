@@ -16,6 +16,7 @@
     git add .vimrc 
     git commit -m 'init'
     git remote add origin git@github.com:fei-du/vim-vundle.git
+    git clone git@github.com:fei-du/vim-vundle.git
     git push -u origin master
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
@@ -92,6 +93,8 @@
     sudo apt-get install gcc-arm-linux-gnueabihf
     #install dtc, not avaiable on ubuntu-14
     sudo apt-get install device-tree-compiler
+    #setup WLS
+    sudo apt-get install build-essential
 
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
