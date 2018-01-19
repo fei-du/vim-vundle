@@ -40,6 +40,8 @@
     sudo make install
     # skip vifmrc, currently not working on ubuntu box
     mv vifmrc vifmrc_backup
+    # customize prompt for WSL
+    export PS1='\[\033[1;35m\]\u @ \[\033[01;32m\]\w \[\e[1;33m\]\n$\[\e[0m\] '
 
     #install ncdu
     # https://dev.yorhel.nl/ncdu/man
