@@ -56,3 +56,28 @@ set -o nounset                                  # Treat unset variables as an er
     -print # default
     -delete
     -exec
+
+[grep]
+    # grep "string" file_pattern
+    grep this demo_file*
+    grep -i line demo_file
+    # regular expression
+    grep "line.*emp" demo_file
+    grep line.*emp demo_file
+    grep -i is demo_file
+    # check for full words
+    grep -iw is demo_file
+    grep -i -w is demo_file
+    # context line control
+    grep -A 3 -i sit random_file
+    grep -B 2 -A 3 -i sit random_file
+    grep -C 2 -i sit random_file
+    grep -r "ramesh" *
+    # invert match
+    grep -v "go" demo_file
+    # display lines not matching all given pattern
+    grep -v -e "pattern" -e "pattern"
+    # display only the file name
+    grep -l this demo*
+    # show only matched string
+    grep -o is.*line demo_file
