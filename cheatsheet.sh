@@ -81,3 +81,26 @@ set -o nounset                                  # Treat unset variables as an er
     grep -l this demo*
     # show only matched string
     grep -o is.*line demo_file
+    grep IFS * -n -C 3
+
+[tar]
+    # tar function [options] object1 object2
+    tar -cvf a.tar gitconfig setup.sh
+    tar -tf a.tar
+    tar -xvf a.tar
+
+[option]
+    getopt ab:cd -a -b test1 -cd test2 test4
+    getopt ab:cd -a -b test1 -cde test2 test4
+    getopt -q ab:cd -a -b test1 -cde test2 test4
+
+[misc]
+    # without the dollar sign, the shell interprest the variable name as a normal text string
+    # math equation $[1+ 5] supports only integer arithmetic
+    # exit status codes can only go up to 255
+    # double parentheses allows to incorporate advanced mathematical formulas, and assigning values
+    # subshell $()
+    # double brackets for string comparisons: pattern matching
+    # bash shell automatically gives error messages a higher priority than the standard output.
+    # use subshell to capture the output of a function to a shell variable
+    # variable defined in function is global, unless use local keyword.
