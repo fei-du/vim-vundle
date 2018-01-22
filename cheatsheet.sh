@@ -134,3 +134,60 @@ set -o nounset                                  # Treat unset variables as an er
     # bash shell automatically gives error messages a higher priority than the standard output.
     # use subshell to capture the output of a function to a shell variable
     # variable defined in function is global, unless use local keyword.
+
+[sed]
+    # search
+	s/pattern/replacement/flags
+	    a number: indicating pattern occurence for which new text shold be subsituted
+	    g, indicating for all occurences
+	    p, indicating original line should be printed
+	    w file, writing subsituted line to a file, together with -n option
+	sed 's!/bin/bash!/bin/csh!' /etc/passwd
+
+	address {
+	    command1
+	    command2
+	    command3
+	}
+	sed '2,3s/dog/cat/' data1.txt
+	/pattern/command
+	sed '/dufei/s/bash/csh/' /etc/passwd
+    # deleting lines
+	sed '2,3d' data1.txt
+	sed '/number 1/d' data1.txt
+    # inserting and appending text
+	echo "test line 2" | sed 'i\test line 1'
+	echo "test line 2" | sed 'a\test line 1'
+	sed '$a\
+	    This is a new line of test' data1.txt
+	sed '1i\
+	    this is one line of text.\
+	    this is another line of new text.' data1.txt
+    # changing lines
+	sed '3c\
+	    this is a changed line of text'  data1.txt
+	sed '/number 3/c\
+	    this is a changed line of text'  data1.txt
+    # transforming characters: performing a one to one mapping of the inchars and outchars
+	sed 'y/1234/6789/' data1.txt
+    # printing lines
+	echo "this is a test" | sed 'p'
+	sed -n '/number 3/p' data1.txt
+	sed -n '2,3p' data1.txt
+	# displays the line before it's changed
+	sed -n '/3/{
+	    p
+	    s/line/test/p
+	    }' data1.txt
+    # printing line numbers
+	sed '=' data1.txt
+    # listing lines allowing to print text and nonprintable characters
+	sed -n 'l' data1.txt
+    # using file with sed
+	sed '1,2w test.txt' data1.txt
+	sed -n '1,2w test.txt' data1.txt
+	sed '3r test.txt' data1.txt
+	sed '/number 2/r test.txt' data1.txt
+	sed '$r test.txt' data1.txt
+	# a cool application of the read command is to use it in conjunction with a delete
+	# to replace a placeholder in a file with data from another file
