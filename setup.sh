@@ -46,6 +46,7 @@
     #install ncdu
     # https://dev.yorhel.nl/ncdu/man
     aptinst ncdu
+    aptinst git-extras
 
     #bash-it
     bashit enable plugin dirs
