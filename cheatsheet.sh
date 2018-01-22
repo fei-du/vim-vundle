@@ -94,6 +94,27 @@ set -o nounset                                  # Treat unset variables as an er
     getopt ab:cd -a -b test1 -cde test2 test4
     getopt -q ab:cd -a -b test1 -cde test2 test4
 
+[xargs]
+    # read data from stdin and executes command(supplied) one or more times based on the input read
+    find ./music -name "*.mp3" -print0 | xargs -0 ls
+    # find all file in work folder, pass to grep and search for profit
+    find ./work -print | xargs grep "profit"
+    # find and delete files which have been modified in the last 30 mins:
+    find ./work -mmin -30 | xargs -0 rm
+    find ./work -print0 | xargs -0 rm
+    # run diff on file pairs, should be invoked as a shell script
+    echo $* | xargs -n2 diff
+    # read a list of filename from filelist.txt and copy them to new_folder
+    xargs -a filelist.txt cp -t new_folder
+    xargs -L 1 find -name
+    {} as the argument list marker for commands taking more than two arguments
+    find . -name "*.sh" -print0 | xargs -0 -I {} mv {} ~/back.scripts
+    find . -name "*.sh" -print0 | xargs -0 -I file mv file ~/back.scripts
+    # convert multiline output to single line
+    find . -name "*sh" | xargs
+    find . -name "*sh" | xargs grep "ksh"
+    ls -l *sh | xargs
+
 [misc]
     # without the dollar sign, the shell interprest the variable name as a normal text string
     # math equation $[1+ 5] supports only integer arithmetic
