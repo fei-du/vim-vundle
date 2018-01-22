@@ -108,12 +108,21 @@ set -o nounset                                  # Treat unset variables as an er
     xargs -a filelist.txt cp -t new_folder
     xargs -L 1 find -name
     {} as the argument list marker for commands taking more than two arguments
+    # dealing file name with blank spaces and newline
     find . -name "*.sh" -print0 | xargs -0 -I {} mv {} ~/back.scripts
     find . -name "*.sh" -print0 | xargs -0 -I file mv file ~/back.scripts
     # convert multiline output to single line
     find . -name "*sh" | xargs
     find . -name "*sh" | xargs grep "ksh"
     ls -l *sh | xargs
+    ls -l *.sh | xargs wc -l
+    cut -d, -f1 smartphone.csv | sort | xargs
+    ls | xargs -t -I {} mv {} {}.old
+    # run a command on files that you select individually
+    # select files to add to the lib.a library, -p flag to confirm
+    ls | xargs -p -n 1 ar r lib.a
+    # construct a command containing a specific number of arguments and to insert those into the middle of a command line
+    ls | xargs -n 6 | xargs -I {} echo {} - some files in the directory
 
 [misc]
     # without the dollar sign, the shell interprest the variable name as a normal text string
