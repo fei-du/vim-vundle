@@ -162,6 +162,49 @@ set -o nounset                                  # Treat unset variables as an er
 	# Close stdout.
 	1>&-, >&-
     # here documents are a special case of redirected code blocks. that being the case, it should be possible to feed the output of a here document into the stdin for a while loop
+    # in general, an exteranl command in a script forks off a subprocess, whereas bash builtin does not. For this reason, builtins execute more quickly and use fewer system resources than their exteranl command equivalents
+    # variables in a subshell are not visiable outside the block of code in subshell. These are, in effect, variables local to the child process
+    # Directory changes made in a subshell do not carry to the parent shell.
+    # a subshell may be used to set up a "dedicated environment"for a command group
+	    (
+	    IFS=:
+	    PATH=/bin
+	    unset TERMINFO
+	    set -C
+	    shift 5
+	    COMMAND4
+	    COMMAND5
+	    exit 3 # Only exits the subshell!
+	    )
+	# one application of such a "dedicated environment" is testing whether a variable is defined.
+	    if (set -u; : $variable) 2> /dev/null
+	    then
+		echo "variable is set."
+	    fi
+	# another application is checking for a lock file:
+	    if (set -C; : > lock_file) 2> /dev/null ; then
+		: # lock_file didn't exist: no user running the script
+	    else
+		echo "another user is already running that script."
+		exit 65
+	    fi
+	# process Substitution
+	    # piping the stdout of a command into the stdin of another is a powerful technique. but, what if you need to pipe the stdout of multiple commands? this is where process subsitution comes in.
+	    # process subsitution use /dev/df/<n> files to send the results of the process(es) within parentheses to another process
+		wc cheatsheet.sh
+		grep command cheatsheet.sh | wc
+		wc <(grep command cheatsheet.sh)
+	    # process subsitution can compare the output of two different commands, or even the output of different options to the same command
+		comm <(ls -l) <(ls -al)
+	    # process subsitution can compare the contents of two directories -- to see which filenames are in one, but not the other.
+		diff <(ls $first_directory) <(ls $second_directory)
+		cat <(ls -l) # same as ls -l | cat
+		sort -k 9 <(ls -l /bin) <(ls -l /usr/bin)
+		diff <(command1) <(command2) #gives differences in command output
+# [function]
+    # a function may be "compacted"into a single line. In this case, a semicolon must follow the final command in the function
+	fun () { echo "this is a function"; }
+	fun
 
 # [git]
     # check whether remote has changed
