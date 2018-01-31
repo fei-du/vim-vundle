@@ -134,10 +134,40 @@ set -o nounset                                  # Treat unset variables as an er
     # bash shell automatically gives error messages a higher priority than the standard output.
     # use subshell to capture the output of a function to a shell variable
     # variable defined in function is global, unless use local keyword.
+    testfile=$(ls *.sh)
+    echo $testfile
+    # using echo to output an unquoted variable set with command subsitution removes trailing new lines characters from the output of the reassigned command. this can cause unpleasant surprises
+    echo "$testfile"
+    # arithmetic expansion
+    z=$(($z+3))
+    z=$((z+3)) # also correct. within double parentheses, parameter dereferencing is optional
+    # $((expression)) # not to be confused with command subsitution
+    # list OS and kernel version
+    uname -a | cut -d" " -f1,3,11,12
+    # redirect both stdout and stdin to file "filename"
+    &>filename
+    # redirect stderr to stdout
+    2>&1
+    # redirect i to j
+    i>&j
+    # redirect, by default, stdout to j
+    >&j
+    # Closing File Descriptors
+	# Close input file descriptor n.
+	n<&-
+	# Close stdin.
+	0<&-, <&-
+	# Close output file descriptor n.
+	n>&-
+	# Close stdout.
+	1>&-, >&-
+    # here documents are a special case of redirected code blocks. that being the case, it should be possible to feed the output of a here document into the stdin for a while loop
 
 # [git]
     # check whether remote has changed
     git ls-remote origin -h refs/heads/master
+    # Generate diffs with <n> lines of context instead of the usual three
+    git diff  -U10 clock_config.c
 
 # [sed]
     # sed conforms only to a subset of the BRE for the speed
@@ -293,6 +323,8 @@ set -o nounset                                  # Treat unset variables as an er
 	sed 's/foo/bar/4'
 	# delete every third line start from the first
 	sed '1~3d' data1.txt
+	# stop after printing the second line
+	seq 3 | sed 2q
 
 # [RegEX]
     # [general]
