@@ -201,16 +201,39 @@ set -o nounset                                  # Treat unset variables as an er
 		cat <(ls -l) # same as ls -l | cat
 		sort -k 9 <(ls -l /bin) <(ls -l /usr/bin)
 		diff <(command1) <(command2) #gives differences in command output
-# [function]
-    # a function may be "compacted"into a single line. In this case, a semicolon must follow the final command in the function
-	fun () { echo "this is a function"; }
-	fun
-    # in contrast to C, a bash variable declared inside a function is local only if declared as such.
-    # before a function is called, all variables declared within the function are invisible outside the body of the function, not just those explicitly declared as local.
-# [list constructs]
-    # the and list and or list constructs provide a means of processing a number of commands consecutively. These can effectively replace complex nested if/then or even case statements.
-	# command-1 && command-2 && command-3
-	# command-1 || command-2 || command-3
+    # [function]
+	# a function may be "compacted"into a single line. In this case, a semicolon must follow the final command in the function
+	    fun () { echo "this is a function"; }
+	    fun
+	# in contrast to C, a bash variable declared inside a function is local only if declared as such.
+	# before a function is called, all variables declared within the function are invisible outside the body of the function, not just those explicitly declared as local.
+    # [list constructs]
+	# the and list and or list constructs provide a means of processing a number of commands consecutively. These can effectively replace complex nested if/then or even case statements.
+	    # command-1 && command-2 && command-3
+	    # command-1 || command-2 || command-3
+    # [options]
+	# options are settings that change shell and/or script behavior.
+	set -o option-name
+	set -option-abbrev # these two forms are equivalent.
+	# echoes all commans before executing
+	set -o verbose
+	set -v
+	# to disable an option within a script, use
+	set +o option-name
+	set +option-abbrev
+	# an alternate method of enabling options in a script is to specify them immediately following the #! script header
+	#!/bin/bash -x
+    # [gotchas]
+	# not terminating with a semicolon the final command in a code block within curly brackets
+	{ls -l; df; echo "doen";}
+	# mixing up = and -eq in a test. Remember, = is for comparing literal variables and -eq for integers.
+	# misusing string comparison operators
+	while [ "$number" < 5 ] #wrong! try to use a string comparison on integers
+	while [ "$number" -lt 5 ] # should be.
+	# attempting to use let to set string variables
+	# sometimes variables within "test" bracket ([]) need to be quoted (double quotes)
+	# quoting a variable containing whitespace prevents splitting. sometime this produces unintended consequences.
+	# a script with DOS-type newlines (\r\n) will fail to execute, since #!/bin/bash\r\n is not recognized, not the same as the expected #!/bin/bash\n. the fix it to convert the script to unix-style newlines.
 
 # [git]
     # check whether remote has changed
