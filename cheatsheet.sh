@@ -205,6 +205,12 @@ set -o nounset                                  # Treat unset variables as an er
     # a function may be "compacted"into a single line. In this case, a semicolon must follow the final command in the function
 	fun () { echo "this is a function"; }
 	fun
+    # in contrast to C, a bash variable declared inside a function is local only if declared as such.
+    # before a function is called, all variables declared within the function are invisible outside the body of the function, not just those explicitly declared as local.
+# [list constructs]
+    # the and list and or list constructs provide a means of processing a number of commands consecutively. These can effectively replace complex nested if/then or even case statements.
+	# command-1 && command-2 && command-3
+	# command-1 || command-2 || command-3
 
 # [git]
     # check whether remote has changed

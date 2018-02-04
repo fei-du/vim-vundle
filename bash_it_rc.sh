@@ -18,3 +18,5 @@ export CROSS_COMPILE=arm-linux-gnueabihf-
 export EDITOR=vim
 # edit previous command in editor, save and run
 # fc
+alias path='echo -e ${PATH//:/\\n}'
+function ff() { find . -type f -iname '*'"$*"'*' -ls ; }
