@@ -126,6 +126,7 @@ set -o nounset                                  # Treat unset variables as an er
 
 # [misc]
     # without the dollar sign, the shell interprest the variable name as a normal text string
+    # the ESC character is entered in vi by typing CTRL-V followd by pressing ESC key.
     # math equation $[1+ 5] supports only integer arithmetic
     # exit status codes can only go up to 255
     # double parentheses allows to incorporate advanced mathematical formulas, and assigning values
@@ -134,6 +135,7 @@ set -o nounset                                  # Treat unset variables as an er
     # bash shell automatically gives error messages a higher priority than the standard output.
     # use subshell to capture the output of a function to a shell variable
     # variable defined in function is global, unless use local keyword.
+    # ctrl+x ctrl+e to edit current command line in vim EDITOR
     testfile=$(ls *.sh)
     echo $testfile
     # using echo to output an unquoted variable set with command subsitution removes trailing new lines characters from the output of the reassigned command. this can cause unpleasant surprises
@@ -234,6 +236,7 @@ set -o nounset                                  # Treat unset variables as an er
 	# sometimes variables within "test" bracket ([]) need to be quoted (double quotes)
 	# quoting a variable containing whitespace prevents splitting. sometime this produces unintended consequences.
 	# a script with DOS-type newlines (\r\n) will fail to execute, since #!/bin/bash\r\n is not recognized, not the same as the expected #!/bin/bash\n. the fix it to convert the script to unix-style newlines.
+	# insert a literal tab in bash shell command line: control + v, then tab. if you see the cursor over to the right, it worked.
 
 # [git]
     # check whether remote has changed
@@ -242,7 +245,19 @@ set -o nounset                                  # Treat unset variables as an er
     git diff  -U10 clock_config.c
 
 # [sed]
+    # sed is implicitly global.
+    # a sed command can specify zero, one, or two addresses. an address can be a regular expression describing a pattern, a line number, or a line addressing symbol.
+    # the line numbers refers to an internal line counter maintained by sed. This counter is not reset for multiple input files. There is only one line 1 in the input stream.
+    # the first address as enabling the action and the second address as disabling it. Sed has no way of looking ahead to determine if the second match will be made.
+    # an exclamation mark (!) following an address reverses the sense of match.
+    # the default action is to print each line that matches the pattern.
+    # in the replacement section, only the following characters have special meaning:
+	# & replaced by the string matched by the regular expression
+	# \n  Matches the nth substring previously specified in the pattern using "\(" and "\)". we can use a similar technique to match parts of a line and swap them.
+	# \ used to escape
+	# if a script contains multiple substitue commands that match the same line, multiple copies of that line will be printed or written to file.
     # sed conforms only to a subset of the BRE for the speed
+    # the change, insert, append commands must be specified over multiple lines and can not be specified on the same line.
     # search
 	s/pattern/replacement/flags
 	    a number: indicating pattern occurence for which new text shold be subsituted
@@ -260,17 +275,28 @@ set -o nounset                                  # Treat unset variables as an er
 	/pattern/command
 	sed '/dufei/s/bash/csh/' /etc/passwd
     # deleting lines
+	# the delete command is also a command that can change the flow of contorl in a script. Once it is executed, it causes a new line to be read and a new pass on the editing script to begin from the top. In this befavior, it it the same as the next command.
+	# to delete a portion a line, use the substitue command and specify an empty replacement.
 	sed '2,3d' data1.txt
 	sed '/number 1/d' data1.txt
     # inserting and appending text
+	# the supplied text must start on a line by itself and cannot be on the same line as the append command.
 	echo "test line 2" | sed 'i\test line 1'
 	echo "test line 2" | sed 'a\test line 1'
+	# the insert command can be used to put a blank line before current line, or the append command to put one after, by leaving the line following it blank.
+	sed '1a\
+		' data1.txt
+	sed '1i\
+	so maroc\
+	ds chfist' data1.txt
 	sed '$a\
 	    This is a new line of test' data1.txt
 	sed '1i\
 	    this is one line of text.\
 	    this is another line of new text.' data1.txt
     # changing lines
+	# the change command, however, can address a range of lines. it replaces all addressed lines with a single copy of the text. Note that you will see the opposite behavior when the change command is one of a group of commands enclosed in braces, that act on a range of lines. it will output 10 times if there are 10 lines in the range.
+	# the change command clears the pattern space, having the same effect on the pattern space as the delete command. The insert and append do not affect the contents of the pattern space. the supplied text will not match any address in subsequent commands in the script, nor can those commands affect the text. this is also true when the default output is suppressed - the supplied text will be output even if the pattern space is not. also the supplied text does not affect sed's internal line counter.
 	sed '3c\
 	    this is a changed line of text'  data1.txt
 	sed '/number 3/c\
@@ -278,6 +304,14 @@ set -o nounset                                  # Treat unset variables as an er
     # transforming characters: performing a one to one mapping of the inchars and outchars
 	sed 'y/1234/6789/' data1.txt
     # printing lines
+	# the print command might be used for debugging purpose. it is used to show what the line looked like before made any changes.
+	# the substitue command's print flag differs from the print command in that it is conditional upon a successful subsitution.
+	    #n print line before and after the changes.
+		#	    /^\.Ah/{
+		#	    p
+		#	    s/"//g
+		#	    s/^\.Ah //p
+		#	}
 	echo "this is a test" | sed 'p'
 	sed -n '/number 3/p' data1.txt
 	sed -n '2,3p' data1.txt
@@ -288,13 +322,29 @@ set -o nounset                                  # Treat unset variables as an er
 	    }' data1.txt
     # printing line numbers
 	sed '=' data1.txt
-    # listing lines allowing to print text and nonprintable characters
+    # listing lines allowing to print text and nonprintable characters, showing nonprintable characters as two digit ASCII code.
 	sed -n 'l' data1.txt
+    # the n command outputs the contents of the pattern space and then read the next line of input without returning to the top of the script. in effect, the n command the next line of input to replace the current line in the pattern space. subsequent commands in the script are applied to the replacement line, not the current line. if the default output has not been suppressed, the current line is printed before the replacement takes place. Commands before the n command will not be applied to the new input line. nor will commands occuring after it be applied to the old line.
     # using file with sed
+	# one use is to extract information from one file and place it in its own file. the advantage with sed it that we can break up the file into four separate files in a single step.
+	    /Northeast$/w region.northeast
+	    /South$/w region.South
+	    /Midwest$/w region.Midwest
+	    /West$/w region.West
+	    # we may want to remove the name of the region before writing it to file. for each case, we could handle it as below:
+	    /Northeast$/{
+			s///
+			w region.northeast
+			}
+	    # you could use it in a script to generate several customized versions of the same source file.
+	# the quit command causes sed to stop reading new line input and stop sending them to the output.
+	sed '1q' data1.txt
 	sed '1,2w test.txt' data1.txt
 	sed -n '1,2w test.txt' data1.txt
 	sed '3r test.txt' data1.txt
 	sed '/number 2/r test.txt' data1.txt
+	# the read command reads the contents of file into the pattern space after the addressed line.
+	# you must have a single space between the command and the filename. (everything after the space and up to the newline is taken to be the filename.)
 	sed '$r test.txt' data1.txt
 	# a cool application of the read command is to use it in conjunction with a delete
 	# to replace a placeholder in a file with data from another file

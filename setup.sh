@@ -47,6 +47,7 @@
     # https://dev.yorhel.nl/ncdu/man
     aptinst ncdu
     aptinst git-extras
+    aptinst silversearcher-ag
 
     #bash-it
     bashit enable plugin dirs
