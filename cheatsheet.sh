@@ -258,7 +258,15 @@ set -o nounset                                  # Treat unset variables as an er
 	# if a script contains multiple substitue commands that match the same line, multiple copies of that line will be printed or written to file.
     # sed conforms only to a subset of the BRE for the speed
     # the change, insert, append commands must be specified over multiple lines and can not be specified on the same line.
-    # search
+    # Remember \b is a word boundary. \w is a single 'word' character. sed by default requires + to be escaped. the regex to match a word is \b\w\+\b, we repeat the matched word, use backreferences and we need to capture first. Capturing parenthesis need to be escaped. \1 is backreference to whatever was matched by the regex within the parenthesis: \(\b\w\+\b\) \1
+    cat text_repeat.txt | sed 's/\(\b\w\+\b\) \1/\1/g'
+    # or all lines except the second line
+    cat text.txt | sed '2!s/\(\b\w\+\b\) \1/\1/g'
+    # remove empty lines
+    cat comfile.txt | sed -e '/^\( \|\t\)*$/d'
+    cat comfile.txt | sed -e '/^[ \t]*$/d'
+    sed '2{s/ab/xx/g; s/ac/yy/g}'
+     # search
 	s/pattern/replacement/flags
 	    a number: indicating pattern occurence for which new text shold be subsituted
 	    g, indicating for all occurences
@@ -343,6 +351,7 @@ set -o nounset                                  # Treat unset variables as an er
 	sed -n '1,2w test.txt' data1.txt
 	sed '3r test.txt' data1.txt
 	sed '/number 2/r test.txt' data1.txt
+	echo teh Teh atehb | sed 's/\b\(t\)eh\b/\1he/ig' # word boundary subgroup back reference
 	# the read command reads the contents of file into the pattern space after the addressed line.
 	# you must have a single space between the command and the filename. (everything after the space and up to the newline is taken to be the filename.)
 	sed '$r test.txt' data1.txt
@@ -487,3 +496,107 @@ set -o nounset                                  # Treat unset variables as an er
 	echo "Sat" | gawk '/Sat(urday)?/{print $0}'
 	echo "Saturday" | gawk '/Sat(urday)?/{print $0}'
 	echo $PATH | sed 's/:/ /g'
+    # POSIX character classes
+    [:alnum:] # alphanumberic characters
+    [:alpha:] # alphabetic characters
+    [:blank:] # space and tab characters
+    [:cntrl:] # control characters
+    [:digit:] # numeric characters
+    [:graph:] # both printable and visiable
+    [:lower:]
+    [:print:] # printable characters
+    [:punct:] # punctuation characters
+    [:space:] # space
+    [:upper:]
+    [:xdigit:]
+    # collating symbols multicharacter collating elements enclosed between '[.' and '.]'
+    # awk (and POSIX) regex always match the leftmost, longest sequency of input characters that can match.
+    echo aaaabcd | awk '{ sub(/a+/, "<A>"); print}'
+    \s # match any whitespace, think of it as shorthand for [[:space:]]
+    \S # match any character that is not whitespace.
+    \w # match any word-constituent character -- that is, it matches any letter, digit, or underscore.
+    \W # same as previous
+    \< # matches the empty string at the beginning of a word. /\<away/
+    \> # matches the empty string at the end of a word.
+    \y # matches the empty string either beginning or end of a word (boundary)
+    \B # matches the empty string that occurs between two word-constituent characters. /\Brat\B matches 'crate', but it does not match 'dirty rat', \B is essentially the opposite of \y.
+
+# [awk]
+    # case is normally significant in regex, both when matching ordinary characters and inside bracket expressions. One way to perform a case-insensitive match is to convert the data to a single case, using the tolower() or toupper() built-in string functions.
+    # another method, specific to gawk, is to set the variable IGNORECASE to a nonzero value(predefined variable). Changing the value of IGNORECASE dynamically controls the case sensitivity of the program it runs
+    x = "aB"
+    if ( x ~ /ab/ ) ... # this will fail
+    IGNORECASE = 1
+    if ( x ~ /ab/ ) ... # this will succeed
+    # on rare occasions, you may need to use the getline command. the getline command is valuable both because it can do explicit input from any number of files, and because the files used with it do not have to be named on the awk command line.
+    FNR # which is reset to zero every time a new file is started. Another predefined variable NR records the total number of input records read so far from all datafiles. it starts at zero, but is never automatically reset to zero.
+    # the new record-separator character should be enclosed in quotation marks, whihc indicate a string constant.
+    # another way to change the record separator is on the command line, using the variable-assignment feature
+    awk '{print $0}' RS="u" mail-list # this sets RS to 'u' before processing mail-list
+
+    # awk reads files in units called records.records are automatically split into fields. by default, records are separated by newlines, fields are separated by whitespace. the awk execution cycle is over records.
+    # $1 $2 this means concatenation, string join. awk '{ print $4"  "$3"\t\t"$2$1 }'
+    # patterns in awk serve the same function as addresses in sed. Patterns specified before the beginning of a block. BEGIN and END. Patterns can be: any expression that return a value (different from sed), a regex, a range of the form expr1, expr2. if we use regex, just like sed, awk executes the block for any record that matches the regex. as soon as awk finishes the begin block, it will start reading input from file.
+    # to print only lines that begin with character #
+    cat cheatsheet.sh | awk '/^#/{ print }'
+    # a pattern is negated by preceeding it with a  !
+    cat cheatsheet.sh | awk '! /^#/{ print }'
+    # awk has certain variables whose values are dynamically set by awk itself.
+	# NF number of fields: this numbers can be changed, eg: 3 fields in first line, 4 fields in second line.
+	# NR number of records: in our case, it is line number.
+	cat cheatsheet.sh | awk 'NR % 2 == 0 {print}'
+	cat cheatsheet.sh | awk '$1 == "C" { print }'
+	# when the awk sees the slash '/', it knows it is regex.  if no slask, it is line expression, such 2 is line expression, returning 2 which is true.
+	# range operation: two regex, or one regex, another is line expression.
+	cat cheatsheet.sh | awk '/^C/,/^N/ { print }'
+	cat cheatsheet.sh | awk '/^C/,NR==7 { print }'
+	# by default awk considers each line as a record. and, each space separated word of a line as a field. that is: the newline character is the record separator, whitespace is the field separator. The FS and RS variables allow us to modify this behavior.
+	#parsing mbox text
+	cat mbox | awk 'BEGIN{RS = "\n\nFrom "; FS = "\n"}
+	NR == 2{ print }'
+	# climateData
+	cat monthlyPDI.txt | awk 'BEGIN { tot=0 } {
+	    tot = tot + $2 } NR%12 == 0{ print tot/12; tot = 0 }' | wc -l
+	echo $((503/12))
+	# when you use uninitialized variable, the value is 0. So the BEGIN block is unnecessary.
+	cat monthlyPDI.txt | awk '{ tot = tot + $2 }'
+	# in awk ducoment, you can have address or action, but you can obmit any one of them
+	# address and or action block NR==7 is equal to NR==7{ print }
+	# null strings are removed when they occur as part of a nono-null command line argument, while explicit null objects are kept.
+	awk -F "" 'program' files # correct
+	# don't use this:
+	awk -F"" 'program' files # wrong!
+	# a  fourth option is to use command-line variable assignment,
+	awk -v sq="'" 'BEGIN { print "here is a single quote <" sq ">"}'
+	# if your really need both single and double quotes in your awk program, it is probably best to move it into a separate file.
+	# in a awk rule, either the pattern or the action can e omitted, but not both. if pattern omitted, then the action is performed for every input line. if action omitted, the default action is to print all lines that match the pattern. By comparison, omitting the print statement but retaining the braces makes an empty action that does noting (i.e., no lines are printed).
+	# print every line that is longer than 80 characters
+	awk 'length($0) > 80' cheatsheet.sh # the sole rule has a relation expression as its pattern and has no action.
+	awk '{ if (length($0) > max ) max = length($0)}
+	    END{ print "maximun line length is " max}' cheatsheet.sh
+	# print every line that has at least one field
+	awk 'NF > 0 ' data1.txt
+	# print a sorted list of the login names of all users:
+	awk -F: '{print $1}' /etc/passwd | sort
+	# count the lines in a file
+	awk 'END{print NR}' data1.txt
+	awk 'NR % 2 == 0' data1.txt
+	ls -l | awk '$6 == "Feb" { sum += $5 }
+		END { print sum}'
+	# the -f option may be used more than once. awk reads its program source from all of the named files, as if they had been concatenated together into one big file. This is useful for creating libraries of awk functions. these functions can be written once and then retrieved from a standard place. the -i option is similar in this regard. Because it is clumsy using awk to mix source file and commandline, gawk provides the -e option. it allows you to easily mix commandline and library source code. it can be used multiple times on commandline.
+	# an argument that has the form var=value, assigns the value to the variable var -- it does not specify a file at all.
+	awk -f program.awk file1 count=1 file2 # all the commandline arguments are made available to your awk program in the ARGV array.
+	# the distinction between filename arguments and variable-assignment arguments is made when awk is about to open the next input file. In particular the values of variables assigned in this fashion are not available inside a BEGIN rule.
+	# Naming standard Input
+	some_command | awk -f myprog.awk file1 - file2 # here awk first reads file1, then it reads the output of some_command, and finally it reads file2.
+	# with gawk, if filename supplied to -f or -i options does not contain a directory separator '/', then gawk searches a list of directories one by one, looking for a file with the specified name. the search path is a string consisting of directory names separated by colons. gawk gets its search path from the AWKPATH environment path. The library files can be placed in a standand directory in the default path and specified on the command line with a short filename. if the source file is not found after the initial search, the path is searched again after adding the suffix '.awk'to the filename.
+	# ^ matches the beginning of a string. It is important to realize that '^' doesn't match the beginning of a line (the point right after a '\n ' newline character) embedded in a string.. The condition is not true in the following example: 
+	if ("line1\nLINE 2" ~ /^L/) ...
+	# after the end of the record has been determined, gawk sets the variable RT to the text in the input that matched RS. When RS is a single character, RT contains the same single character. However, when RS is a regular expression, RT contains the actual input text that matched the regular expression.
+	echo record 1  AA     record 2 BB record 3 |
+	gawk 'BEGIN { RS = "\n|( *[[:upper:]]+ *)"}
+		{print "record =", $0, "and RT = [" RT "]"}'
+	# the square brackets delineate the contents of RT, letting you see the leading and trailing whitespace. the final value of RT is a newline. gawk views the input file as one long string that happens to contain newline characters. it is thus best to avoid anchor metacharacters in the value of RS.
+	# NF is a predefined variable whose value is the number of fields in the current record. awk automatically updates the value of NF each time it reads a record. No matter how many fields there are, the last field in a record can be represented by $NF.
+	# using expressions as field numbers:
+	awk '{ print $(2*2)}' data1.txt # awk evaluates the expression (2*2) and uses its value as the number of the field to print.

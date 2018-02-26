@@ -40,6 +40,7 @@ Plugin 'ldong/vim_loremipsum'
 Plugin 'mattn/emmet-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'WolfgangMehner/bash-support'
+Plugin 'godlygeek/tabular'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
