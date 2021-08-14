@@ -17,3 +17,5 @@
 	ui = auto
 [push]
 	default = simple
+[credential]
+	helper = cache
