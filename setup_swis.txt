@@ -10,6 +10,8 @@
     # install vim-vundle
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
     ln -s vim-vundle/.vimrc .vimrc
+    g config --global credential.helper cache
+    g config --global unset credential.helper
 # default is tcsh
 lsv11360:~/vim-vundle> echo $SHELL
 /bin/tcsh
