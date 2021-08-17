@@ -52,13 +52,21 @@ set tabstop=8
 "visual mode search
 vnoremap // y/<C-R>"<CR>
 let mapleader = "\<Space>"
-" copy & paste to system clipboard
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
+
+if has('clipboard')
+    " copy & paste to system clipboard
+    vmap <Leader>y "+y
+    vmap <Leader>d "+d
+    nmap <Leader>p "+p
+    nmap <Leader>P "+P
+    vmap <Leader>p "+p
+    vmap <Leader>P "+P
+else
+    " vim does not support xtremclip board and use temp fie instead
+    echo 'clipboard not available'
+    vnoremap <leader>y :w! /tmp/vitmp<CR>
+    nnoremap <leader>p :r! cat /tmp/vitmp<CR>
+endif
 
 " size of an "indent"
 set shiftwidth=4

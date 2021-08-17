@@ -15,3 +15,19 @@
 # default is tcsh
 lsv11360:~/vim-vundle> echo $SHELL
 /bin/tcsh
+
+[install anaconda]
+    sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+    sha256sum Anaconda3-2021.05-Linux-x86_64.sh
+    bash ~/data/Anaconda3-2021.05-Linux-x86_64.sh
+[vim with clipboard avaiable]
+    sudo apt-get install vim-gtk3 -y
+    vim --version  | grep clipboard
+    seems above not working
+    following only works the clipboard is set just before open the vim
+    clipboard works in konsole, but not working in ssh connection
+    sudo add-apt-repository ppa:jonathonf/vim
+    sudo apt update
+    sudo apt install vim
+
+
