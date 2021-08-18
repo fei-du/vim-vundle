@@ -33,3 +33,16 @@ lsv11360:~/vim-vundle> echo $SHELL
 [jupyter extension]
     conda install jupytext -c conda-forge
     pip install jupyterlab_vim #enter a password
+
+[install rstudio server]
+    _ apt update
+    _ apt install --no-install-recommends software-properties-common dirmngr
+    _ wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+    _ add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+    _ apt install --no-install-recommends r-base
+    _ add-apt-repository ppa:c2d4u.team/c2d4u4.0+
+    _ apt install --no-install-recommends r-cran-tidyverse
+    sudo apt-get install gdebi-core
+    wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
+    sudo gdebi rstudio-server-1.4.1717-amd64.deb
+
