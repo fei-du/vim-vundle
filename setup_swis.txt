@@ -30,4 +30,6 @@ lsv11360:~/vim-vundle> echo $SHELL
     sudo apt update
     sudo apt install vim
 
-
+[jupyter extension]
+    conda install jupytext -c conda-forge
+    pip install jupyterlab_vim #enter a password
