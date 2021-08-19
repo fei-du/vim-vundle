@@ -49,3 +49,5 @@ lsv11360:~/vim-vundle> echo $SHELL
     apt-cache search r-cran- | vim - #search available packages on r-cran
     _ apt install --no-install-recommends r-cran-abind #installing abind for testing
     _ apt install --no-install-recommends r-cran-learnr # failed to install learnr, different from rstudio desktop, and as it is not available in r-cran- search list
+    _ apt install --no-install-recommends r-cran-remotes
+    _ R then run remotes::install_github('rstudio/flexdashboard') to download and build flexdashboard, and the location is /usr/local/lib/R/site-library
