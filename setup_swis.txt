@@ -33,6 +33,7 @@ lsv11360:~/vim-vundle> echo $SHELL
 [jupyter extension]
     conda install jupytext -c conda-forge
     pip install jupyterlab_vim #enter a password
+    jupyter lab --no-browser --port=1119
 
 [install rstudio server]
     _ apt update
@@ -50,4 +51,14 @@ lsv11360:~/vim-vundle> echo $SHELL
     _ apt install --no-install-recommends r-cran-abind #installing abind for testing
     _ apt install --no-install-recommends r-cran-learnr # failed to install learnr, different from rstudio desktop, and as it is not available in r-cran- search list
     _ apt install --no-install-recommends r-cran-remotes
+    R then tinytex::install_tinytex() to install .Tinytex in home directory and link ~/bin in home dir for pdflatex to show in PATH
     _ R then run remotes::install_github('rstudio/flexdashboard') to download and build flexdashboard, and the location is /usr/local/lib/R/site-library
+    _ apt install --no-install-recommends r-cran-nycflights13
+    _ apt install --no-install-recommends r-cran-lahman
+    _ R then run install.packages('ggbeeswarm') # installing to /usr/local/lib/R/site-library/00LOCK-beeswarm/00new/beeswarm/libs
+    _ R then run install.packages('pryr') # Installing package into ‘/usr/local/lib/R/site-library’
+    _ R then install.packages('plotly')
+    _ R then install.packages('repurrrsive')
+    _ R then install.packages('listviewer')
+    _ R then install.packages("kableExtra")
+
