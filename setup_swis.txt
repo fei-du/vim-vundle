@@ -61,4 +61,23 @@ lsv11360:~/vim-vundle> echo $SHELL
     _ R then install.packages('repurrrsive')
     _ R then install.packages('listviewer')
     _ R then install.packages("kableExtra")
+    sudo apt-get install libmagick++-dev # first install libmagick tool
+    install.packages('magick') # then install magick for image processing successfully
+    _ R then install.packages('printr')
+    _ R then install.packages("reticulate")
+    _ R then install.packages("rmdformats")
+    _ R then install.packages("ggtext") # failed to install RCurl, install using remotes instead
+    _ R then remotes::install_github("wilkelab/gridtext") 
+    _ R then remotes::install_github("wilkelab/ggtext")
+    _ R then install.packages("directlabels")
+    _ R then install.packages("ggforce")
+    _ R then install.packages("gghighlight")
+    _ R then install.packages("patchwork")
+    _ R then install.packages("scales")
+    _ R then install.packages("memoise")
+    _ R then install.packages("sloop")
 
+
+[misc]
+    _ apt-get install highlight
+    _ apt-get install p7zip-full
