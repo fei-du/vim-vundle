@@ -34,6 +34,30 @@ lsv11360:~/vim-vundle> echo $SHELL
     conda install jupytext -c conda-forge
     pip install jupyterlab_vim #enter a password
     jupyter lab --no-browser --port=1119
+    study create new conda env 20220113_20_54
+    conda create -n jupyterlab-debugger -c conda-forge jupyterlab=3 ipykernel>=6 xeus-python //seem not working on ubuntu using the line below
+    conda create -n jupyterlab-debugger -c conda-forge jupyterlab=3 ipykernel xeus-python
+    conda activate jupyterlab-debugger
+    conda info --env # list environment
+    pip install jupyterlab_vim
+    conda install jupytext -c conda-forge
+    pip install scrapbook
+    black sample.py #create cache for black in order to get the error writing failed [Error 2] no such file
+    pip install ipywidgets
+    pip install matplotlib
+    pip install ipympl
+    pip install sidecar
+    pip install bqplot
+    pip install seaborn
+    pip install sklearn
+    pip install nbqa black
+    pip install isort
+    # in base environment
+    pip install natsort
+    pip install more-itertools
+    pip install pytest
+    pip install pydantic
+    pip install mypy
 
 [install rstudio server]
     _ apt update
@@ -76,6 +100,9 @@ lsv11360:~/vim-vundle> echo $SHELL
     _ R then install.packages("scales")
     _ R then install.packages("memoise")
     _ R then install.packages("sloop")
+    _ R then install.packages("hrbrthemes")
+    _ R then install.packages("xlsx") #failed due to java libary dependency
+    _ R then install.packages('openxlsx') #alternativly use this one instead
 
 
 [misc]
